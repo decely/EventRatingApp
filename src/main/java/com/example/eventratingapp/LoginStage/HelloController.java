@@ -1,11 +1,12 @@
-package com.example.eventratingapp;
+package com.example.eventratingapp.LoginStage;
 
+import com.example.eventratingapp.LoginStage.DataBaseReader;
+import com.example.eventratingapp.LoginStage.DatabaseConnector;
+import com.example.eventratingapp.LoginStage.databaseInfo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.InputEvent;
 import javafx.stage.Stage;
 
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.example.eventratingapp;
+package com.example.eventratingapp.LoginStage;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
