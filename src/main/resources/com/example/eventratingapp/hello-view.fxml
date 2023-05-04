@@ -8,7 +8,25 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <TextField fx:id="login" text="admin" />
-   <PasswordField fx:id="password" text="admin" />
-    <Button fx:id="loginButton" onAction="#onHelloButtonClick" text="Войти" />
+   <VBox fx:id="LoginVbox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+      <children>
+         <TextField fx:id="login" text="admin" />
+         <PasswordField fx:id="password" text="admin" />
+          <Button fx:id="loginButton" onAction="#onHelloButtonClick" text="Войти" />
+      </children>
+      <VBox.margin>
+         <Insets bottom="20.0" left="600.0" right="600.0" top="20.0" />
+      </VBox.margin></VBox>
+   <VBox fx:id="UserVbox" prefHeight="200.0" prefWidth="100.0">
+      <children>
+         <TableView fx:id="eventsView" prefHeight="200.0" prefWidth="200.0">
+           <columns>
+             <TableColumn fx:id="columnEventName" prefWidth="150.40000915527344" text="Название мероприятия" />
+             <TableColumn fx:id="columnEventPlace" minWidth="0.0" prefWidth="132.39999389648438" text="Место проведения" />
+               <TableColumn fx:id="columnEventDate" prefWidth="136.19998168945312" text="Дата проведения" />
+               <TableColumn fx:id="columnEventDescription" prefWidth="799.5999755859375" text="Описание" />
+               <TableColumn fx:id="columnEventRating" prefWidth="78.0" text="Рейтинг" />
+           </columns>
+         </TableView>
+      </children></VBox>
 </VBox>

@@ -1,16 +1,16 @@
 package com.example.eventratingapp.LoginStage;
 
-import com.example.eventratingapp.LoginStage.DataBaseReader;
-import com.example.eventratingapp.LoginStage.DatabaseConnector;
-import com.example.eventratingapp.LoginStage.databaseInfo;
-import javafx.event.ActionEvent;
+import com.example.eventratingapp.EventsInfo;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import static java.lang.System.exit;
@@ -19,21 +19,26 @@ public class HelloController implements Initializable {
     public TextField login;
     public PasswordField password;
     public static Button loginButton;
+    public VBox LoginVbox;
+    public VBox UserVbox;
+    public TableView<EventsInfo> eventsView;
+    public TableColumn<EventsInfo,String> columnEventName;
+    public TableColumn<EventsInfo,String> columnEventPlace;
+    public TableColumn<EventsInfo,Date> columnEventDate;
+    public TableColumn<EventsInfo,String> columnEventDescription;
+    public TableColumn<EventsInfo,Integer> columnEventRating;
     DatabaseConnector postgrecon = null;
-    Stage stage;
 
     @FXML
-    protected void onHelloButtonClick(ActionEvent event) throws SQLException {
+    protected void onHelloButtonClick() throws SQLException {
         var con = postgrecon.getConnection();
         if(DataBaseReader.LoginCheck(login.getText(),password.getText(),con).equals("User")){
             System.out.println("Login as User successful");
-            ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-            postgrecon.closeConnection();
+            userLogin();
         }
         else if (DataBaseReader.LoginCheck(login.getText(),password.getText(),con).equals("Admin")) {
             System.out.println("Login as Admin successful");
-            ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-            postgrecon.closeConnection();
+            userLogin();
         }
         else {
             System.out.println("Login error");
@@ -42,6 +47,7 @@ public class HelloController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        UserVbox.setVisible(false);
 
         databaseInfo database1 = new databaseInfo("jdbc:postgresql://127.0.0.1:5432/JavaTest","postgres","123305");
 
@@ -51,7 +57,6 @@ public class HelloController implements Initializable {
             throw new RuntimeException(e);
         }
 
-        var con = postgrecon.getConnection();
 
         if (postgrecon.hasConnection()) {
             System.out.println("Waiting for login...");
@@ -61,5 +66,19 @@ public class HelloController implements Initializable {
             exit(0);
         }
 
+
+    }
+    public void userLogin() throws SQLException {
+        var con = postgrecon.getConnection();
+        ObservableList<EventsInfo> EventsInfos = DataBaseReader.eventsRead(con);
+        LoginVbox.setVisible(false);
+        UserVbox.setVisible(true);
+        columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));
+        columnEventDate.setCellValueFactory(new PropertyValueFactory<EventsInfo,Date>("eventDate"));
+        columnEventPlace.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventPlace"));
+        columnEventRating.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventRating"));
+        columnEventDescription.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventDescription"));
+        eventsView.setItems(EventsInfos);
+        System.out.println("Event table load successful");
     }
 }
