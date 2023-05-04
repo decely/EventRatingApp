@@ -1,16 +1,23 @@
 package com.example.eventratingapp.LoginStage;
 
 import com.example.eventratingapp.EventsInfo;
+import com.example.eventratingapp.UserStage.DataBaseWriter;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.lang.System.exit;
@@ -21,12 +28,18 @@ public class HelloController implements Initializable {
     public static Button loginButton;
     public VBox LoginVbox;
     public VBox UserVbox;
+    public HBox AdminVbox;
     public TableView<EventsInfo> eventsView;
     public TableColumn<EventsInfo,String> columnEventName;
     public TableColumn<EventsInfo,String> columnEventPlace;
     public TableColumn<EventsInfo,Date> columnEventDate;
     public TableColumn<EventsInfo,String> columnEventDescription;
     public TableColumn<EventsInfo,Integer> columnEventRating;
+    public TextField EventNameField;
+    public TextField EventPlaceField;
+    public TextArea EventDescriptionField;
+    public DatePicker EventDateField;
+
     DatabaseConnector postgrecon = null;
 
     @FXML
@@ -39,6 +52,7 @@ public class HelloController implements Initializable {
         else if (DataBaseReader.LoginCheck(login.getText(),password.getText(),con).equals("Admin")) {
             System.out.println("Login as Admin successful");
             userLogin();
+            AdminVbox.setVisible(true);
         }
         else {
             System.out.println("Login error");
@@ -48,6 +62,7 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UserVbox.setVisible(false);
+        AdminVbox.setVisible(false);
 
         databaseInfo database1 = new databaseInfo("jdbc:postgresql://127.0.0.1:5432/JavaTest","postgres","123305");
 
@@ -65,10 +80,9 @@ public class HelloController implements Initializable {
             System.out.println("Exiting program...");
             exit(0);
         }
-
-
     }
-    public void userLogin() throws SQLException {
+
+    public void refreshTable() throws SQLException {
         var con = postgrecon.getConnection();
         ObservableList<EventsInfo> EventsInfos = DataBaseReader.eventsRead(con);
         LoginVbox.setVisible(false);
@@ -80,5 +94,20 @@ public class HelloController implements Initializable {
         columnEventDescription.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventDescription"));
         eventsView.setItems(EventsInfos);
         System.out.println("Event table load successful");
+    }
+    public void userLogin() throws SQLException {
+        refreshTable();
+    }
+
+    public void AddEvent(ActionEvent actionEvent) throws SQLException {
+        LocalDate localDate = EventDateField.getValue();
+        Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+        Date eventDate = Date.from(instant);
+
+        var con = postgrecon.getConnection();
+        EventsInfo AddEventInfo = new EventsInfo(EventNameField.getText(),EventPlaceField.getText(),eventDate,EventDescriptionField.getText(),0);
+
+        DataBaseWriter.AddEvent(AddEventInfo,con);
+        refreshTable();
     }
 }
