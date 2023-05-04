@@ -41,15 +41,17 @@ public class HelloController implements Initializable {
     public DatePicker EventDateField;
 
     DatabaseConnector postgrecon = null;
+    private userInfo user;
 
     @FXML
     protected void onHelloButtonClick() throws SQLException {
         var con = postgrecon.getConnection();
-        if(DataBaseReader.LoginCheck(login.getText(),password.getText(),con).equals("User")){
+        user = DataBaseReader.LoginCheck(login.getText(),password.getText(),con);
+        if(user.getUserStatus().equals("user")){
             System.out.println("Login as User successful");
             userLogin();
         }
-        else if (DataBaseReader.LoginCheck(login.getText(),password.getText(),con).equals("Admin")) {
+        else if (user.getUserStatus().equals("admin")) {
             System.out.println("Login as Admin successful");
             userLogin();
             AdminVbox.setVisible(true);

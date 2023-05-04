@@ -9,8 +9,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DataBaseReader {
-    public static String LoginCheck (String loginText, String passwordText, Connection connection) throws SQLException {
+    public static userInfo LoginCheck (String loginText, String passwordText, Connection connection) throws SQLException {
         var stmt = connection.createStatement();
+        userInfo user = new userInfo(0,"udentified");
         String login;
         String password;
         boolean admin;
@@ -21,16 +22,19 @@ public class DataBaseReader {
             password = rs.getString("password");
             if(loginText.equals(login) && passwordText.equals(password)){
                 admin = rs.getBoolean("admin");
+                user.setUserID(rs.getInt("userID"));
                 if(admin)
                 {
-                    return "Admin";
+                    user.setUserStatus("admin");
+                    return user;
                 }
                 else
-                    return "User";
+                    user.setUserStatus("user");
+                    return user;
             }
         }
         stmt.close();
-        return "Udentified";
+        return user;
     }
 
     public static ObservableList<EventsInfo> eventsRead(Connection connection) throws SQLException {
