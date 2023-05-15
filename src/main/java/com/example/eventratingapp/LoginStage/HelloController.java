@@ -1,6 +1,8 @@
 package com.example.eventratingapp.LoginStage;
 
 import com.example.eventratingapp.Data.*;
+import com.example.eventratingapp.DataBaseStage.DatabaseConnector;
+import com.example.eventratingapp.DataBaseStage.databaseInfo;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

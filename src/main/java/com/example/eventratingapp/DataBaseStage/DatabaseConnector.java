@@ -1,4 +1,4 @@
-package com.example.eventratingapp.LoginStage;
+package com.example.eventratingapp.DataBaseStage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

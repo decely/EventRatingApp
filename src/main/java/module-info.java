@@ -10,4 +10,6 @@ module com.example.eventratingapp {
     opens com.example.eventratingapp.LoginStage to javafx.fxml;
     exports com.example.eventratingapp.Data;
     opens com.example.eventratingapp.Data to javafx.fxml;
+    exports com.example.eventratingapp.DataBaseStage;
+    opens com.example.eventratingapp.DataBaseStage to javafx.fxml;
 }
