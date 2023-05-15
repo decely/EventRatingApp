@@ -15,7 +15,10 @@ public class UserDAOImpl implements UserDAO{
         ObservableList<userInfo> UserInfos = FXCollections.observableArrayList();
         ResultSet rs = stmt.executeQuery( "SELECT * FROM eventratingusers;" );
         while ( rs.next() ) {
-            UserInfos.add(new userInfo(rs.getInt("userID"),rs.getString("status"),rs.getString("password"),rs.getString("username")));
+            UserInfos.add(new userInfo(rs.getInt("userID"),
+                    rs.getString("status"),
+                    rs.getString("password"),
+                    rs.getString("username")));
         }
         stmt.close();
         return UserInfos;

@@ -31,21 +31,26 @@
    </HBox>
    <VBox fx:id="UserVbox" prefHeight="200.0" prefWidth="100.0">
       <children>
-         <TableView fx:id="eventsView" prefHeight="200.0" prefWidth="200.0">
+         <TableView fx:id="eventsView" onMouseClicked="#eventSelected" prefHeight="200.0" prefWidth="200.0">
            <columns>
-             <TableColumn fx:id="columnEventName" prefWidth="150.40000915527344" text="Название мероприятия" />
-             <TableColumn fx:id="columnEventPlace" minWidth="0.0" prefWidth="132.39999389648438" text="Место проведения" />
-               <TableColumn fx:id="columnEventDate" prefWidth="136.19998168945312" text="Дата проведения" />
-               <TableColumn fx:id="columnEventDescription" prefWidth="799.5999755859375" text="Описание" />
-               <TableColumn fx:id="columnEventRating" prefWidth="78.0" text="Рейтинг" />
+               <TableColumn fx:id="columnEventID" prefWidth="140.2000026702881" text="Номер мероприятия" />
+             <TableColumn fx:id="columnEventName" prefWidth="86.20001220703125" text="Название" />
+             <TableColumn fx:id="columnEventPlace" minWidth="0.0" prefWidth="192.80001831054688" text="Место проведения (аудитория)" />
+               <TableColumn fx:id="columnEventDate" prefWidth="127.79998779296875" text="Дата проведения" />
+               <TableColumn fx:id="columnEventDescription" prefWidth="620.4000244140625" text="Описание" />
+               <TableColumn fx:id="columnEventRating" prefWidth="210.0" text="Рейтинг (посещаемость)" />
            </columns>
          </TableView>
-         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-            <children>
-               <Label text="Выбранное мероприятие: " />
-               <Button mnemonicParsing="false" text="Оценить положительно" />
-               <Button mnemonicParsing="false" text="Оценить отрицательно" />
-            </children>
-         </HBox>
+         <BorderPane prefHeight="70.0" prefWidth="200.0">
+            <left>
+               <Label fx:id="labelSelectedCell" text="Выбранное мероприятие: " BorderPane.alignment="CENTER" />
+            </left>
+            <right>
+               <Button mnemonicParsing="false" text="Отметиться о посещении" BorderPane.alignment="CENTER" />
+            </right>
+            <padding>
+               <Insets left="100.0" right="100.0" />
+            </padding>
+         </BorderPane>
       </children></VBox>
 </VBox>

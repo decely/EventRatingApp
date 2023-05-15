@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -39,24 +40,27 @@ public class HelloController implements Initializable {
     public TextField EventPlaceField;
     public TextArea EventDescriptionField;
     public DatePicker EventDateField;
+    public TableColumn columnEventID;
+    public Label labelSelectedCell;
 
     DatabaseConnector postgrecon = null;
-    private userInfo user;
     private EventsDAO eventsDAO = new EventsDAOImpl();
     private UserDAO userDAO = new UserDAOImpl();
+    private int userID;
+    private int eventID;
 
     @FXML
     protected void onHelloButtonClick() throws SQLException {
         var con = postgrecon.getConnection();
         ObservableList<userInfo> userInfos = userDAO.getUserList(con);
-        userInfo loginuser = new userInfo(0,"unidentified",password.getText(),login.getText());
-        user = LoginCheck.makeCheck(loginuser,userInfos);
-        System.out.println(user.getUserStatus());
-        if(user.getUserStatus().equals("user")){
+        userInfo loginuser = new userInfo(-1,"unidentified",password.getText(),login.getText());
+        loginuser = LoginCheck.makeCheck(loginuser,userInfos);
+        System.out.println(loginuser.getUserStatus());
+        if(loginuser.getUserStatus().equals("user")){
             System.out.println("Login as User successful");
             userLogin();
         }
-        else if (user.getUserStatus().equals("admin")) {
+        else if (loginuser.getUserStatus().equals("admin")) {
             System.out.println("Login as Admin successful");
             userLogin();
             AdminVbox.setVisible(true);
@@ -64,6 +68,7 @@ public class HelloController implements Initializable {
         else {
             System.out.println("Login error");
         }
+        userID = loginuser.getUserID();
     }
 
     @Override
@@ -95,6 +100,7 @@ public class HelloController implements Initializable {
 
         LoginVbox.setVisible(false);
         UserVbox.setVisible(true);
+        columnEventID.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventID"));
         columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));
         columnEventDate.setCellValueFactory(new PropertyValueFactory<EventsInfo,Date>("eventDate"));
         columnEventPlace.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventPlace"));
@@ -113,9 +119,23 @@ public class HelloController implements Initializable {
         Date eventDate = Date.from(instant);
 
         var con = postgrecon.getConnection();
-        EventsInfo AddEventInfo = new EventsInfo(EventNameField.getText(),EventPlaceField.getText(),eventDate,EventDescriptionField.getText(),0);
+        EventsInfo AddEventInfo = new EventsInfo(0,
+                EventNameField.getText(),
+                EventPlaceField.getText(),
+                eventDate,
+                EventDescriptionField.getText(),
+                0);
 
         eventsDAO.addEvent(AddEventInfo, con);
         refreshTable();
+    }
+
+    public void eventSelected(MouseEvent mouseEvent) {
+        if(eventsView.getSelectionModel().getSelectedItem() != null)
+            labelSelectedCell.setText("Выбранное мероприятие: "
+                    + columnEventID.getCellData(eventsView.getSelectionModel().getSelectedIndex())
+                    + " - "
+                    + columnEventName.getCellData(eventsView.getSelectionModel().getSelectedIndex()));
+
     }
 }

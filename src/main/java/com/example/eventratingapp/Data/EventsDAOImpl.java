@@ -13,9 +13,14 @@ public class EventsDAOImpl implements EventsDAO{
         var stmt = con.createStatement();
 
         ObservableList<EventsInfo> EventsInfos = FXCollections.observableArrayList();
-        ResultSet rs = stmt.executeQuery( "SELECT * FROM eventrating;" );
+        ResultSet rs = stmt.executeQuery( "SELECT * FROM eventratingevents;" );
         while ( rs.next() ) {
-            EventsInfos.add(new EventsInfo(rs.getString("eventname"),rs.getString("eventplace"),rs.getDate("eventdate"),rs.getString("eventdescription"),rs.getInt("eventrating")));
+            EventsInfos.add(new EventsInfo(rs.getInt("eventID"),
+                    rs.getString("eventname"),
+                    rs.getString("eventplace"),
+                    rs.getDate("eventdate"),
+                    rs.getString("eventdescription"),
+                    rs.getInt("eventrating")));
         }
         stmt.close();
         return EventsInfos;
@@ -25,7 +30,12 @@ public class EventsDAOImpl implements EventsDAO{
     public void addEvent(EventsInfo eventsInfo, Connection con) throws SQLException {
         var stmt = con.createStatement();
 
-        String FillQuery = "INSERT INTO eventrating VALUES ('"+eventsInfo.getEventName()+"', '"+eventsInfo.getEventPlace()+"', '"+eventsInfo.getEventDate()+"','"+eventsInfo.getEventDescription()+"','"+eventsInfo.getEventRating()+"')";
+        String FillQuery = "INSERT INTO eventratingevents VALUES ('"
+                +eventsInfo.getEventName()+"', '"
+                +eventsInfo.getEventPlace()+"', '"
+                +eventsInfo.getEventDate()+"','"
+                +eventsInfo.getEventDescription()+"','"
+                +eventsInfo.getEventRating()+"',default)";
         stmt.execute(FillQuery);
         System.out.println("Event "+eventsInfo.getEventName()+ " added successfully");
 
