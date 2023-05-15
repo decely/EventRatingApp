@@ -46,7 +46,7 @@
                <Label fx:id="labelSelectedCell" text="Выбранное мероприятие: " BorderPane.alignment="CENTER" />
             </left>
             <right>
-               <Button mnemonicParsing="false" text="Отметиться о посещении" BorderPane.alignment="CENTER" />
+               <Button mnemonicParsing="false" onAction="#onRatingButtonClicked" text="Отметиться о посещении" BorderPane.alignment="CENTER" />
             </right>
             <padding>
                <Insets left="100.0" right="100.0" />

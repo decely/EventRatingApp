@@ -46,6 +46,7 @@ public class HelloController implements Initializable {
     DatabaseConnector postgrecon = null;
     private EventsDAO eventsDAO = new EventsDAOImpl();
     private UserDAO userDAO = new UserDAOImpl();
+    private RatingDAO ratingDAO = new RatingDAOImpl();
     private int userID;
     private int eventID;
 
@@ -131,11 +132,18 @@ public class HelloController implements Initializable {
     }
 
     public void eventSelected(MouseEvent mouseEvent) {
-        if(eventsView.getSelectionModel().getSelectedItem() != null)
+        if(eventsView.getSelectionModel().getSelectedItem() != null) {
             labelSelectedCell.setText("Выбранное мероприятие: "
                     + columnEventID.getCellData(eventsView.getSelectionModel().getSelectedIndex())
                     + " - "
                     + columnEventName.getCellData(eventsView.getSelectionModel().getSelectedIndex()));
+            eventID = (int) columnEventID.getCellData(eventsView.getSelectionModel().getSelectedIndex());
+        }
+    }
 
+    public void onRatingButtonClicked(ActionEvent actionEvent) throws SQLException {
+        var con = postgrecon.getConnection();
+        RatingInfo ratingInfo = new RatingInfo(eventID,userID,true);
+        ratingDAO.addRating(ratingInfo,con);
     }
 }
