@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DataBaseReader {
     public static userInfo LoginCheck (String loginText, String passwordText, Connection connection) throws SQLException {
         var stmt = connection.createStatement();
-        userInfo user = new userInfo(0,"udentified");
+        userInfo user = null;
         String login;
         String password;
         boolean admin;

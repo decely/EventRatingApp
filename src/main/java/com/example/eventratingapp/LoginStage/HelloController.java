@@ -1,10 +1,6 @@
 package com.example.eventratingapp.LoginStage;
 
-import com.example.eventratingapp.Data.EventsDAO;
-import com.example.eventratingapp.Data.EventsDAOImpl;
-import com.example.eventratingapp.Data.EventsInfo;
-import com.example.eventratingapp.Data.userInfo;
-import com.example.eventratingapp.UserStage.DataBaseWriter;
+import com.example.eventratingapp.Data.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,11 +41,15 @@ public class HelloController implements Initializable {
     DatabaseConnector postgrecon = null;
     private userInfo user;
     private EventsDAO eventsDAO = new EventsDAOImpl();
+    private UserDAO userDAO = new UserDAOImpl();
 
     @FXML
     protected void onHelloButtonClick() throws SQLException {
         var con = postgrecon.getConnection();
-        user = DataBaseReader.LoginCheck(login.getText(),password.getText(),con);
+        ObservableList<userInfo> userInfos = userDAO.getUserList(con);
+        userInfo loginuser = new userInfo(0,"unidentified",password.getText(),login.getText());
+        user = LoginCheck.makeCheck(loginuser,userInfos);
+        System.out.println(user.getUserStatus());
         if(user.getUserStatus().equals("user")){
             System.out.println("Login as User successful");
             userLogin();
@@ -90,6 +90,7 @@ public class HelloController implements Initializable {
     public void refreshTable() throws SQLException {
         var con = postgrecon.getConnection();
         ObservableList<EventsInfo> EventsInfos = eventsDAO.getEventsList(con);
+
         LoginVbox.setVisible(false);
         UserVbox.setVisible(true);
         columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));
@@ -112,7 +113,7 @@ public class HelloController implements Initializable {
         var con = postgrecon.getConnection();
         EventsInfo AddEventInfo = new EventsInfo(EventNameField.getText(),EventPlaceField.getText(),eventDate,EventDescriptionField.getText(),0);
 
-        DataBaseWriter.AddEvent(AddEventInfo,con);
+        eventsDAO.addEvent(AddEventInfo, con);
         refreshTable();
     }
 }

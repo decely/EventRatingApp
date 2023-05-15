@@ -20,4 +20,15 @@ public class EventsDAOImpl implements EventsDAO{
         stmt.close();
         return EventsInfos;
     }
+
+    @Override
+    public void addEvent(EventsInfo eventsInfo, Connection con) throws SQLException {
+        var stmt = con.createStatement();
+
+        String FillQuery = "INSERT INTO eventrating VALUES ('"+eventsInfo.getEventName()+"', '"+eventsInfo.getEventPlace()+"', '"+eventsInfo.getEventDate()+"','"+eventsInfo.getEventDescription()+"','"+eventsInfo.getEventRating()+"')";
+        stmt.execute(FillQuery);
+        System.out.println("Event "+eventsInfo.getEventName()+ " added successfully");
+
+        stmt.close();
+    }
 }
