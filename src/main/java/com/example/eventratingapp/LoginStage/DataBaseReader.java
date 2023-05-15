@@ -1,6 +1,7 @@
 package com.example.eventratingapp.LoginStage;
 
-import com.example.eventratingapp.EventsInfo;
+import com.example.eventratingapp.Data.EventsInfo;
+import com.example.eventratingapp.Data.userInfo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

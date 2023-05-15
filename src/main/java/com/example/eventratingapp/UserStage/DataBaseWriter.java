@@ -1,6 +1,6 @@
 package com.example.eventratingapp.UserStage;
 
-import com.example.eventratingapp.EventsInfo;
+import com.example.eventratingapp.Data.EventsInfo;
 
 import java.sql.Connection;
 import java.sql.SQLException;

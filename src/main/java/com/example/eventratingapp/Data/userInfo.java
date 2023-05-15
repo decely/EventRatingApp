@@ -1,4 +1,4 @@
-package com.example.eventratingapp.LoginStage;
+package com.example.eventratingapp.Data;
 
 public class userInfo {
     private int userID;

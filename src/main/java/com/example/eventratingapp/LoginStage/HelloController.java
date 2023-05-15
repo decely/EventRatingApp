@@ -1,6 +1,9 @@
 package com.example.eventratingapp.LoginStage;
 
-import com.example.eventratingapp.EventsInfo;
+import com.example.eventratingapp.Data.EventsDAO;
+import com.example.eventratingapp.Data.EventsDAOImpl;
+import com.example.eventratingapp.Data.EventsInfo;
+import com.example.eventratingapp.Data.userInfo;
 import com.example.eventratingapp.UserStage.DataBaseWriter;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +20,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.lang.System.exit;
@@ -42,6 +44,7 @@ public class HelloController implements Initializable {
 
     DatabaseConnector postgrecon = null;
     private userInfo user;
+    private EventsDAO eventsDAO = new EventsDAOImpl();
 
     @FXML
     protected void onHelloButtonClick() throws SQLException {
@@ -86,7 +89,7 @@ public class HelloController implements Initializable {
 
     public void refreshTable() throws SQLException {
         var con = postgrecon.getConnection();
-        ObservableList<EventsInfo> EventsInfos = DataBaseReader.eventsRead(con);
+        ObservableList<EventsInfo> EventsInfos = eventsDAO.getEventsList(con);
         LoginVbox.setVisible(false);
         UserVbox.setVisible(true);
         columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));

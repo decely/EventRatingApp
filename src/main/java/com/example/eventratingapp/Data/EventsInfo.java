@@ -1,4 +1,4 @@
-package com.example.eventratingapp;
+package com.example.eventratingapp.Data;
 
 import java.util.Date;
 
