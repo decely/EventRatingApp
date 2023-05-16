@@ -9,4 +9,5 @@ import java.sql.SQLException;
 public interface EventsDAO {
     ObservableList<EventsInfo> getEventsList(Connection con) throws SQLException;
     void addEvent(EventsInfo eventsInfo, Connection con) throws SQLException;
+    void increaseRating(int eventid, Connection con) throws SQLException;
 }

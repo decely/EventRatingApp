@@ -41,4 +41,17 @@ public class EventsDAOImpl implements EventsDAO{
 
         stmt.close();
     }
+
+    @Override
+    public void increaseRating(int eventid, Connection con) throws SQLException {
+        var stmt = con.createStatement();
+
+        String FillQuery = "UPDATE eventratingevents\n"
+                + "SET eventrating = eventrating + 1\n"
+                + "WHERE eventid = " + eventid + ";";
+        stmt.execute(FillQuery);
+        System.out.println("EventID "+eventid+ " increased successfully");
+
+        stmt.close();
+    }
 }

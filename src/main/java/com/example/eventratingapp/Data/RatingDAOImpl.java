@@ -1,14 +1,27 @@
 package com.example.eventratingapp.Data;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RatingDAOImpl implements RatingDAO{
     @Override
     public ObservableList<RatingInfo> getRatingList(Connection con) throws SQLException {
-        return null;
+        var stmt = con.createStatement();
+
+        ObservableList<RatingInfo> ratingInfos = FXCollections.observableArrayList();
+        ResultSet rs = stmt.executeQuery( "SELECT * FROM eventratingrate;" );
+        while ( rs.next() ) {
+            ratingInfos.add(new RatingInfo(
+                    rs.getInt("eventID"),
+                    rs.getInt("userID"),
+                    rs.getBoolean("ratestatus")));
+        }
+        stmt.close();
+        return ratingInfos;
     }
 
     @Override
@@ -24,4 +37,5 @@ public class RatingDAOImpl implements RatingDAO{
 
         stmt.close();
     }
+
 }

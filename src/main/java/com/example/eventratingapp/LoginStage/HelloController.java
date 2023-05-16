@@ -3,6 +3,7 @@ package com.example.eventratingapp.LoginStage;
 import com.example.eventratingapp.Data.*;
 import com.example.eventratingapp.DataBaseStage.DatabaseConnector;
 import com.example.eventratingapp.DataBaseStage.databaseInfo;
+import com.example.eventratingapp.RatingStage.RateCheck;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -108,6 +109,7 @@ public class HelloController implements Initializable {
         columnEventRating.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventRating"));
         columnEventDescription.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventDescription"));
         eventsView.setItems(EventsInfos);
+        eventsView.getSortOrder().add(columnEventID);
         System.out.println("Event table load successful");
     }
     public void userLogin() throws SQLException {
@@ -144,6 +146,13 @@ public class HelloController implements Initializable {
     public void onRatingButtonClicked(ActionEvent actionEvent) throws SQLException {
         var con = postgrecon.getConnection();
         RatingInfo ratingInfo = new RatingInfo(eventID,userID,true);
-        ratingDAO.addRating(ratingInfo,con);
+        ObservableList<RatingInfo> ratingData = ratingDAO.getRatingList(con);
+        if (!RateCheck.isRated(ratingData, eventID, userID)) {
+            ratingDAO.addRating(ratingInfo, con);
+            eventsDAO.increaseRating(eventID, con);
+            refreshTable();
+        }
+        else
+            System.out.println("This event is already rated");
     }
 }
