@@ -4,10 +4,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.eventratingapp.LoginStage.HelloController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.eventratingapp.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
+   <BorderPane prefHeight="50.0" prefWidth="200.0">
+      <left>
+         <Button mnemonicParsing="false" onAction="#onChangeUserButtonClicked" text="Сменить пользователя" BorderPane.alignment="CENTER" />
+      </left>
+   </BorderPane>
    <VBox fx:id="LoginVbox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
       <children>
          <TextField fx:id="login" text="admin" />

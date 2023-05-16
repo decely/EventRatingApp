@@ -1,8 +1,9 @@
-package com.example.eventratingapp.LoginStage;
+package com.example.eventratingapp;
 
 import com.example.eventratingapp.Data.*;
 import com.example.eventratingapp.DataBaseStage.DatabaseConnector;
 import com.example.eventratingapp.DataBaseStage.databaseInfo;
+import com.example.eventratingapp.LoginStage.LoginCheck;
 import com.example.eventratingapp.RatingStage.RateCheck;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -100,8 +101,6 @@ public class HelloController implements Initializable {
         var con = postgrecon.getConnection();
         ObservableList<EventsInfo> EventsInfos = eventsDAO.getEventsList(con);
 
-        LoginVbox.setVisible(false);
-        UserVbox.setVisible(true);
         columnEventID.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventID"));
         columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));
         columnEventDate.setCellValueFactory(new PropertyValueFactory<EventsInfo,Date>("eventDate"));
@@ -113,6 +112,8 @@ public class HelloController implements Initializable {
         System.out.println("Event table load successful");
     }
     public void userLogin() throws SQLException {
+        LoginVbox.setVisible(false);
+        UserVbox.setVisible(true);
         refreshTable();
     }
 
@@ -154,5 +155,11 @@ public class HelloController implements Initializable {
         }
         else
             System.out.println("This event is already rated");
+    }
+
+    public void onChangeUserButtonClicked(ActionEvent actionEvent) {
+        LoginVbox.setVisible(true);
+        UserVbox.setVisible(false);
+        AdminVbox.setVisible(false);
     }
 }
