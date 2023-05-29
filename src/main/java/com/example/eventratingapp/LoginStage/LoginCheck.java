@@ -1,10 +1,11 @@
 package com.example.eventratingapp.LoginStage;
 
 import com.example.eventratingapp.Data.userInfo;
-import javafx.collections.ObservableList;
+
+import java.util.List;
 
 public class LoginCheck {
-    public static userInfo makeCheck(userInfo loginuser, ObservableList<userInfo> userInfos) {
+    public static userInfo makeCheck(userInfo loginuser, List<userInfo> userInfos) {
         userInfos.forEach(userInfo -> {
             if(loginuser.getUserLogin().equals(userInfo.getUserLogin()) && loginuser.getUserPassword().equals(userInfo.getUserPassword()))
             {

@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static java.lang.System.exit;
@@ -53,7 +54,7 @@ public class HelloController implements Initializable {
     @FXML
     protected void onHelloButtonClick() throws SQLException {
         var con = postgrecon.getConnection();
-        ObservableList<userInfo> userInfos = dbDAO.getUserList(con);
+        List<userInfo> userInfos = dbDAO.getUserList(con);
         userInfo loginuser = new userInfo(-1,"unidentified",password.getText(),login.getText());
         loginuser = LoginCheck.makeCheck(loginuser,userInfos);
         System.out.println(loginuser.getUserStatus());
@@ -97,7 +98,7 @@ public class HelloController implements Initializable {
 
     public void refreshTable() throws SQLException {
         var con = postgrecon.getConnection();
-        ObservableList<EventsInfo> EventsInfos = dbDAO.getEventsList(con);
+        List<EventsInfo> EventsInfos = dbDAO.getEventsList(con);
 
         columnEventID.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventID"));
         columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));
@@ -105,7 +106,7 @@ public class HelloController implements Initializable {
         columnEventPlace.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventPlace"));
         columnEventRating.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventRating"));
         columnEventDescription.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventDescription"));
-        eventsView.setItems(EventsInfos);
+        eventsView.setItems((ObservableList<EventsInfo>) EventsInfos);
         eventsView.getSortOrder().add(columnEventID);
         System.out.println("Event table load successful");
     }
@@ -145,7 +146,7 @@ public class HelloController implements Initializable {
     public void onRatingButtonClicked(ActionEvent actionEvent) throws SQLException {
         var con = postgrecon.getConnection();
         RatingInfo ratingInfo = new RatingInfo(eventID,userID,true);
-        ObservableList<RatingInfo> ratingData = dbDAO.getRatingList(con);
+        List<RatingInfo> ratingData = dbDAO.getRatingList(con);
         if (!RateCheck.isRated(ratingData, eventID, userID)) {
             dbDAO.addRating(ratingInfo, con);
             dbDAO.updateEvent(eventID, con);
