@@ -46,16 +46,14 @@ public class HelloController implements Initializable {
     public Label labelSelectedCell;
 
     DatabaseConnector postgrecon = null;
-    private EventsDAO eventsDAO = new EventsDAOImpl();
-    private UserDAO userDAO = new UserDAOImpl();
-    private RatingDAO ratingDAO = new RatingDAOImpl();
+    private DAO dbDAO = new DAOImpl();
     private int userID;
     private int eventID;
 
     @FXML
     protected void onHelloButtonClick() throws SQLException {
         var con = postgrecon.getConnection();
-        ObservableList<userInfo> userInfos = userDAO.getUserList(con);
+        ObservableList<userInfo> userInfos = dbDAO.getUserList(con);
         userInfo loginuser = new userInfo(-1,"unidentified",password.getText(),login.getText());
         loginuser = LoginCheck.makeCheck(loginuser,userInfos);
         System.out.println(loginuser.getUserStatus());
@@ -99,7 +97,7 @@ public class HelloController implements Initializable {
 
     public void refreshTable() throws SQLException {
         var con = postgrecon.getConnection();
-        ObservableList<EventsInfo> EventsInfos = eventsDAO.getEventsList(con);
+        ObservableList<EventsInfo> EventsInfos = dbDAO.getEventsList(con);
 
         columnEventID.setCellValueFactory(new PropertyValueFactory<EventsInfo,Integer>("eventID"));
         columnEventName.setCellValueFactory(new PropertyValueFactory<EventsInfo,String>("eventName"));
@@ -130,7 +128,7 @@ public class HelloController implements Initializable {
                 EventDescriptionField.getText(),
                 0);
 
-        eventsDAO.addEvent(AddEventInfo, con);
+        dbDAO.addEvent(AddEventInfo, con);
         refreshTable();
     }
 
@@ -147,10 +145,10 @@ public class HelloController implements Initializable {
     public void onRatingButtonClicked(ActionEvent actionEvent) throws SQLException {
         var con = postgrecon.getConnection();
         RatingInfo ratingInfo = new RatingInfo(eventID,userID,true);
-        ObservableList<RatingInfo> ratingData = ratingDAO.getRatingList(con);
+        ObservableList<RatingInfo> ratingData = dbDAO.getRatingList(con);
         if (!RateCheck.isRated(ratingData, eventID, userID)) {
-            ratingDAO.addRating(ratingInfo, con);
-            eventsDAO.increaseRating(eventID, con);
+            dbDAO.addRating(ratingInfo, con);
+            dbDAO.updateEvent(eventID, con);
             refreshTable();
         }
         else
