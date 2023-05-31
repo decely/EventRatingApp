@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -45,6 +46,7 @@ public class HelloController implements Initializable {
     public DatePicker EventDateField;
     public TableColumn columnEventID;
     public Label labelSelectedCell;
+    public BorderPane UserToolPane;
 
     DatabaseConnector postgrecon = null;
     private DAO dbDAO = new DAOImpl();
@@ -61,11 +63,13 @@ public class HelloController implements Initializable {
         if(loginuser.getUserStatus().equals("user")){
             System.out.println("Login as User successful");
             userLogin();
+            UserToolPane.setVisible(true);
         }
         else if (loginuser.getUserStatus().equals("admin")) {
             System.out.println("Login as Admin successful");
             userLogin();
             AdminVbox.setVisible(true);
+            UserToolPane.setVisible(false);
         }
         else {
             System.out.println("Login error");

@@ -46,7 +46,7 @@
                <TableColumn fx:id="columnEventRating" prefWidth="210.0" text="Рейтинг (посещаемость)" />
            </columns>
          </TableView>
-         <BorderPane prefHeight="70.0" prefWidth="200.0">
+         <BorderPane fx:id="UserToolPane" prefHeight="70.0" prefWidth="200.0">
             <left>
                <Label fx:id="labelSelectedCell" text="Выбранное мероприятие: " BorderPane.alignment="CENTER" />
             </left>
