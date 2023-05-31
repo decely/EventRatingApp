@@ -4,11 +4,58 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.eventratingapp.LoginStage.HelloController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.eventratingapp.HelloController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <TextField fx:id="login" text="admin" />
-   <PasswordField fx:id="password" text="admin" />
-    <Button fx:id="loginButton" onAction="#onHelloButtonClick" text="Войти" />
+   <BorderPane prefHeight="50.0" prefWidth="200.0">
+      <left>
+         <Button mnemonicParsing="false" onAction="#onChangeUserButtonClicked" text="Сменить пользователя" BorderPane.alignment="CENTER" />
+      </left>
+   </BorderPane>
+   <VBox fx:id="LoginVbox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+      <children>
+         <TextField fx:id="login" text="admin" />
+         <PasswordField fx:id="password" text="admin" />
+          <Button fx:id="loginButton" onAction="#onHelloButtonClick" text="Войти" />
+      </children>
+      <VBox.margin>
+         <Insets bottom="20.0" left="600.0" right="600.0" top="20.0" />
+      </VBox.margin></VBox>
+   <HBox fx:id="AdminVbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+      <children>
+         <TextField fx:id="EventNameField" promptText="Название мероприятия" />
+         <TextField fx:id="EventPlaceField" promptText="Место проведения" />
+         <DatePicker fx:id="EventDateField" promptText="Дата проведения" />
+         <TextArea fx:id="EventDescriptionField" prefHeight="200.0" prefWidth="200.0" promptText="Описание" />
+         <Button mnemonicParsing="false" onAction="#AddEvent" text="Добавить мероприятие" />
+      </children>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+   </HBox>
+   <VBox fx:id="UserVbox" prefHeight="200.0" prefWidth="100.0">
+      <children>
+         <TableView fx:id="eventsView" onMouseClicked="#eventSelected" prefHeight="200.0" prefWidth="200.0">
+           <columns>
+               <TableColumn fx:id="columnEventID" prefWidth="140.2000026702881" text="Номер мероприятия" />
+             <TableColumn fx:id="columnEventName" prefWidth="86.20001220703125" text="Название" />
+             <TableColumn fx:id="columnEventPlace" minWidth="0.0" prefWidth="192.80001831054688" text="Место проведения (аудитория)" />
+               <TableColumn fx:id="columnEventDate" prefWidth="127.79998779296875" text="Дата проведения" />
+               <TableColumn fx:id="columnEventDescription" prefWidth="620.4000244140625" text="Описание" />
+               <TableColumn fx:id="columnEventRating" prefWidth="210.0" text="Рейтинг (посещаемость)" />
+           </columns>
+         </TableView>
+         <BorderPane fx:id="UserToolPane" prefHeight="70.0" prefWidth="200.0">
+            <left>
+               <Label fx:id="labelSelectedCell" text="Выбранное мероприятие: " BorderPane.alignment="CENTER" />
+            </left>
+            <right>
+               <Button mnemonicParsing="false" onAction="#onRatingButtonClicked" text="Отметиться о посещении" BorderPane.alignment="CENTER" />
+            </right>
+            <padding>
+               <Insets left="100.0" right="100.0" />
+            </padding>
+         </BorderPane>
+      </children></VBox>
 </VBox>

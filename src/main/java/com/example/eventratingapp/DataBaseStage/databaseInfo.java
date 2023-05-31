@@ -1,4 +1,4 @@
-package com.example.eventratingapp.LoginStage;
+package com.example.eventratingapp.DataBaseStage;
 
 public class databaseInfo {
     private String DB_URL;
